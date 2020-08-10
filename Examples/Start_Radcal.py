@@ -54,19 +54,19 @@ Process="./RADCAL.x"
 try:
     retcode = subprocess.call(Process, shell=True)
     if retcode < 0:
-        print >>sys.stderr, "Program was terminated by signal", -retcode
+        print("Program was terminated by signal", end="", file=sys.stderr)
     else:
-        print >>sys.stderr, "Program ended correctly"
+        print("Program ended correctly", end="", file=sys.stderr)
 except OSError as e:
-    print >>sys.stderr, "Execution failed:", e
-
+    print("Execution failed:", end="e", file=sys.stderr)
+    
 #==============================================================================
 # Read tecplot output created by RADCAL.
 # file_2_read = TRANS_<CASEID>.tec
 # CASEID can be read from the first line of RADCAL.out Case ID: <CASEID>
 
 # Get CASE ID
-f          = file("RADCAL.out","r")
+f          = open("RADCAL.out","r")
 lines      = f.readlines()
 first_line = lines[0]
 
@@ -105,9 +105,9 @@ with open(tecplot_file, 'r') as f:
 		if i>= 6:
 			line         = line.strip()
 			sline        = line.split()
-			wavenumber.append(   sline[column_wavenumber    ] )
-			transmissity.append( sline[column_transmissivity] )
-			radiance.append(     sline[column_radiance      ] )
+			wavenumber.append(  float( sline[column_wavenumber    ] ))
+			transmissity.append( float( sline[column_transmissivity]) )
+			radiance.append(  float( sline[column_radiance      ] ))
 
 #==============================================================================
 # Plot the graph
